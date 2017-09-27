@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "demoxxxsep-service"
+spec:
+  # if your cluster supports it, uncomment the following to automatically create
+  # an external load-balanced IP for the frontend service.
+  #type: LoadBalancer
+  type: NodePort
+  ports:
+  # the port that this service should serve on
+  - name: http
+    port: 9080
+  - name: https
+    port: 9443
+
+  selector:
+    app: "demoxxxsep-selector"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "demoxxxsep-deployment"
+spec:
+  # this replicas value is default
+  # modify it according to your case
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "demoxxxsep-selector"
+    spec:
+      containers:
+      - name: demoxxxsep
+        image: demoxxxsep:latest
+        readinessProbe:
+          httpGet:
+            path: /demoxxxsep/health
+            port: 9080
+          initialDelaySeconds: 20
+        # resources:
+        #   requests:
+        #     cpu: 100m
+        #     memory: 100Mi

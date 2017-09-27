@@ -1,0 +1,10 @@
+---
+applications:
+- instances: 1
+  timeout: 180
+  name: demoxxxsep
+  buildpack: liberty-for-java
+  path: ./target/demoxxxsep.zip
+  memory: 512M
+  domain: mybluemix.net
+  host: demoxxxsep
